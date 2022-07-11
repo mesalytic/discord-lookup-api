@@ -30,20 +30,26 @@ app.get('/:id/', cors({ methods: ['GET'] }), (req, res) => {
     }).then(res => res.json())
     .then(json => {
 
-        let avatar = null;
-        if (json.avatar) avatar = `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}`
+        let avatarLink = null;
+        if (json.avatar) avatarLink = `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}`
 
-        let banner = null;
-        if (json.banner) banner = `https://cdn.discordapp.com/banners/${json.id}/${json.banner}`
+        let bannerLink = null;
+        if (json.banner) bannerLink = `https://cdn.discordapp.com/banners/${json.id}/${json.banner}`
 
         res.send({
             id: json.id,
             tag: `${json.username}#${json.discriminator}`,
-            avatar,
-            banner,
-            banner_id: json.banner,
-            is_animated: json.banner != null && json.banner.startsWith("a_") ? true : false,
-            banner_color: json.banner_color
+            avatar: {
+                id: json.avatar,
+                link: avatarLink,
+                is_animated: json.avatar != null && json.avatar.startsWith("a_") ? true : false
+            },
+            banner: {
+                id: json.banner,
+                link: bannerLink,
+                is_animated: json.banner != null && json.banner.startsWith("a_") ? true : false,
+                color: json.banner_color
+            }
         });
         console.log(json);
     })

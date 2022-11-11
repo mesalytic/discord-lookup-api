@@ -47,6 +47,9 @@ app.get("/v1/:id/", cors({ methods: ["GET"] }), (req, res) => {
         { flag: "EARLY_VERIFIED_BOT_DEVELOPER", bitwise: 1 << 17 },
         { flag: "DISCORD_CERTIFIED_MODERATOR", bitwise: 1 << 18 },
         { flag: "BOT_HTTP_INTERACTIONS", bitwise: 1 << 19 },
+        { flag: "SPAMMER", bitwise: 1 << 20 },
+        { flag: "ACTIVE_DEVELOPER", bitwise: 1 << 22 },
+        { flag: "QUARANTINED", bitwise: 17592186044416 }
       ];
 
       FLAGS.forEach((flag) => {

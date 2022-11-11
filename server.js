@@ -19,10 +19,10 @@ app.get("/", (req, res) => {
   res.send("root page");
 });
 
-app.get("/:id/", cors({ methods: ["GET"] }), (req, res) => {
+app.get("/v1/:id/", cors({ methods: ["GET"] }), (req, res) => {
   let id = req.params.id;
 
-  fetch(`https://canary.discord.com/api/v9/users/${id}`, {
+  fetch(`https://canary.discord.com/api/v10/users/${id}`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bot ${config.token}`,

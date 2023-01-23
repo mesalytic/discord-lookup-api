@@ -2,93 +2,163 @@ const express = require("express");
 const http = require("http");
 const fetch = require("node-fetch");
 const cors = require("cors");
+const redis = require('redis');
 
 const config = require("./config.json");
+
+
+const client = redis.createClient();
+client.connect();
+
+client.on("error", (err) => {
+    console.log(err);
+})
 
 const app = express();
 app.use(cors());
 
 app.use((req, res, next) => {
-  res.append("Access-Control-Allow-Origin", ["*"]);
-  res.append("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-  res.append("Access-Control-Allow-Headers", "Content-Type");
-  next();
+    res.append("Access-Control-Allow-Origin", ["*"]);
+    res.append("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+    res.append("Access-Control-Allow-Headers", "Content-Type");
+    next();
 });
 
 app.get("/", (req, res) => {
-  res.send("root page");
+    res.send("root page");
 });
 
-app.get("/v1/:id/", cors({ methods: ["GET"] }), (req, res) => {
-  let id = req.params.id;
+app.get("/v1/:id/", cors({
+    methods: ["GET"]
+}), async (req, res) => {
+    let id = req.params.id;
 
-  fetch(`https://canary.discord.com/api/v10/users/${id}`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bot ${config.token}`,
-    },
-  })
-    .then((res) => res.json())
-    .then((json) => {
-      let publicFlags = [];
+    try {
+        let cached = await client.get(id)
 
-      let FLAGS = [
-        { flag: "DISCORD_EMPLOYEE", bitwise: 1 << 0 },
-        { flag: "PARTNERED_SERVER_OWNER", bitwise: 1 << 1 },
-        { flag: "HYPESQUAD_EVENTS", bitwise: 1 << 2 },
-        { flag: "BUGHUNTER_LEVEL_1", bitwise: 1 << 3 },
-        { flag: "HOUSE_BRAVERY", bitwise: 1 << 6 },
-        { flag: "HOUSE_BRILLIANCE", bitwise: 1 << 7 },
-        { flag: "HOUSE_BALANCE", bitwise: 1 << 8 },
-        { flag: "EARLY_SUPPORTER", bitwise: 1 << 9 },
-        { flag: "TEAM_USER", bitwise: 1 << 10 },
-        { flag: "BUGHUNTER_LEVEL_2", bitwise: 1 << 14 },
-        { flag: "VERIFIED_BOT", bitwise: 1 << 16 },
-        { flag: "EARLY_VERIFIED_BOT_DEVELOPER", bitwise: 1 << 17 },
-        { flag: "DISCORD_CERTIFIED_MODERATOR", bitwise: 1 << 18 },
-        { flag: "BOT_HTTP_INTERACTIONS", bitwise: 1 << 19 },
-        { flag: "SPAMMER", bitwise: 1 << 20 },
-        { flag: "ACTIVE_DEVELOPER", bitwise: 1 << 22 },
-        { flag: "QUARANTINED", bitwise: 17592186044416 }
-      ];
+        if (cached) res.send(JSON.parse(cached));
+        else {
+            fetch(`https://canary.discord.com/api/v10/users/${id}`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bot ${config.token}`,
+                    },
+                })
+                .then((res) => res.json())
+                .then((json) => {
+                    let publicFlags = [];
 
-      FLAGS.forEach((flag) => {
-        if (json.public_flags & flag.bitwise) publicFlags.push(flag.flag);
-      });
+                    let FLAGS = [{
+                            flag: "DISCORD_EMPLOYEE",
+                            bitwise: 1 << 0
+                        },
+                        {
+                            flag: "PARTNERED_SERVER_OWNER",
+                            bitwise: 1 << 1
+                        },
+                        {
+                            flag: "HYPESQUAD_EVENTS",
+                            bitwise: 1 << 2
+                        },
+                        {
+                            flag: "BUGHUNTER_LEVEL_1",
+                            bitwise: 1 << 3
+                        },
+                        {
+                            flag: "HOUSE_BRAVERY",
+                            bitwise: 1 << 6
+                        },
+                        {
+                            flag: "HOUSE_BRILLIANCE",
+                            bitwise: 1 << 7
+                        },
+                        {
+                            flag: "HOUSE_BALANCE",
+                            bitwise: 1 << 8
+                        },
+                        {
+                            flag: "EARLY_SUPPORTER",
+                            bitwise: 1 << 9
+                        },
+                        {
+                            flag: "TEAM_USER",
+                            bitwise: 1 << 10
+                        },
+                        {
+                            flag: "BUGHUNTER_LEVEL_2",
+                            bitwise: 1 << 14
+                        },
+                        {
+                            flag: "VERIFIED_BOT",
+                            bitwise: 1 << 16
+                        },
+                        {
+                            flag: "EARLY_VERIFIED_BOT_DEVELOPER",
+                            bitwise: 1 << 17
+                        },
+                        {
+                            flag: "DISCORD_CERTIFIED_MODERATOR",
+                            bitwise: 1 << 18
+                        },
+                        {
+                            flag: "BOT_HTTP_INTERACTIONS",
+                            bitwise: 1 << 19
+                        },
+                        {
+                            flag: "SPAMMER",
+                            bitwise: 1 << 20
+                        },
+                        {
+                            flag: "ACTIVE_DEVELOPER",
+                            bitwise: 1 << 22
+                        },
+                        {
+                            flag: "QUARANTINED",
+                            bitwise: 17592186044416
+                        }
+                    ];
 
-      let avatarLink = null;
-      if (json.avatar)
-        avatarLink = `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}`;
+                    FLAGS.forEach((flag) => {
+                        if (json.public_flags & flag.bitwise) publicFlags.push(flag.flag);
+                    });
 
-      let bannerLink = null;
-      if (json.banner)
-        bannerLink = `https://cdn.discordapp.com/banners/${json.id}/${json.banner}`;
+                    let avatarLink = null;
+                    if (json.avatar)
+                        avatarLink = `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}`;
 
-      res.send({
-        id: json.id,
-        tag: `${json.username}#${json.discriminator}`,
-        badges: publicFlags,
-        avatar: {
-          id: json.avatar,
-          link: avatarLink,
-          is_animated:
-            json.avatar != null && json.avatar.startsWith("a_") ? true : false,
-        },
-        banner: {
-          id: json.banner,
-          link: bannerLink,
-          is_animated:
-            json.banner != null && json.banner.startsWith("a_") ? true : false,
-          color: json.banner_color,
-        },
-      });
-      console.log(json);
-    });
+                    let bannerLink = null;
+                    if (json.banner)
+                        bannerLink = `https://cdn.discordapp.com/banners/${json.id}/${json.banner}`;
+
+                    let output = {
+                        id: json.id,
+                        tag: `${json.username}#${json.discriminator}`,
+                        badges: publicFlags,
+                        avatar: {
+                            id: json.avatar,
+                            link: avatarLink,
+                            is_animated: json.avatar != null && json.avatar.startsWith("a_") ? true : false,
+                        },
+                        banner: {
+                            id: json.banner,
+                            link: bannerLink,
+                            is_animated: json.banner != null && json.banner.startsWith("a_") ? true : false,
+                            color: json.banner_color,
+                        }
+                    }
+
+                    res.send(output);
+                    client.setEx(id, 10800, JSON.stringify(output)) // cached for 3 hours
+                });
+        }
+    } catch (err) {
+        console.log(err);
+    }
 });
 
-app.get("*", function (req, res) {
-  //console.log(req);
-  res.status(404).send("404 - Not Found");
+app.get("*", function(req, res) {
+    //console.log(req);
+    res.status(404).send("404 - Not Found");
 });
 
 app.listen(process.env.port || 3000, "127.0.0.1");

@@ -12,6 +12,8 @@ The API returns :
 
 The API has built-in CORS support, so you won't have to worry
 
+Data is cached for 3 hours (or until the Redis Server restarts)
+
 ## Usage
 
 You can freely access the API [here](https://discordlookup.mesavirep.xyz)
@@ -49,10 +51,14 @@ returns
 
 ## Installation
 
+> **Note**
+> You must have a Redis server installed, and ready to be used.
+
 1) Clone the repo using Git
 2) Install dependencies (`npm i`)
 3) Open ports (either 3000 or any other port)
-4) Launch the server (`node server.js`)
+4) Launch the Redis Server
+5) Launch the server (`node server.js`)
 
 ## Roadmap
 - Profile Themes support (?? seems to be only via oauth atm)

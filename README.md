@@ -59,7 +59,3 @@ returns
 3) Open ports (either 3000 or any other port)
 4) Launch the Redis Server
 5) Launch the server (`node server.js`)
-
-## Roadmap
-- Profile Themes support (?? seems to be only via oauth atm)
-- Nitro Tiers (via oauth, but I have an idea on how to make it work)

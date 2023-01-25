@@ -169,5 +169,5 @@ app.get("*", function(req, res) {
     res.status(404).send("404 - Not Found");
 });
 
-app.listen(process.env.port || 3000, "127.0.0.1");
-console.log(`Server opened at port ${process.env.port || 3000}`);
+app.listen(process.env.port || config.port, "127.0.0.1");
+console.log(`Server opened at port ${process.env.port || config.port}`);

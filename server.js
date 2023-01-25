@@ -5,6 +5,7 @@ const cors = require("cors");
 const redis = require('redis');
 
 const config = require("./config.json");
+const snowflakeToDate = require("./utils");
 
 
 const client = redis.createClient();
@@ -132,6 +133,7 @@ app.get("/v1/:id/", cors({
 
                     let output = {
                         id: json.id,
+                        created_at: snowflakeToDate(json.id),
                         tag: `${json.username}#${json.discriminator}`,
                         badges: publicFlags,
                         avatar: {
@@ -157,7 +159,6 @@ app.get("/v1/:id/", cors({
 });
 
 app.get("*", function(req, res) {
-    //console.log(req);
     res.status(404).send("404 - Not Found");
 });
 

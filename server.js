@@ -8,7 +8,14 @@ const config = require("./config.json");
 const snowflakeToDate = require("./utils");
 
 
-const client = redis.createClient();
+const client = redis.createClient({
+    socket: {
+        host: config.redis.host,
+        port: config.redis.port
+    },
+    password: config.redis.password
+})
+
 client.connect();
 
 client.on("error", (err) => {

@@ -1,4 +1,8 @@
 {
     "token": "",
-    "redisPort": 6379
+    "redis": {
+        "port": 6379,
+        "host": "",
+        "password": ""
+    }
 }

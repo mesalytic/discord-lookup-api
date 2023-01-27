@@ -1,4 +1,4 @@
-﻿# discord-lookup-api
+# discord-lookup-api
 
 Discord Lookup API is an API that lets you, with a given ID, get basic informations about a user
 
@@ -18,7 +18,7 @@ Data is cached for 3 hours (or until the Redis Server restarts)
 
 You can freely access the API [here](https://discordlookup.mesavirep.xyz)
 
-You must specify an ID to the link
+Right now, you must specify an ID to the link (a proper website is currently [in development](https://github.com/chocololat/discord-lookup-api/tree/website))
 
 ### Example
 

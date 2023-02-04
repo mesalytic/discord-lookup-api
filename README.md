@@ -14,11 +14,18 @@ The API has built-in CORS support, so you won't have to worry
 
 Data is cached for 3 hours (or until the Redis Server restarts)
 
+## Planned features
+
+- Guild Lookup
+- Application Lookup
+- Experiment Lookup
+- Invite Resolver
+
 ## Usage
 
 You can freely access the API [here](https://discordlookup.mesavirep.xyz)
 
-Right now, you must specify an ID to the link (a proper website is currently [in development](https://github.com/chocololat/discord-lookup-api/tree/website))
+Right now, you must specify an ID to the link (a proper website is currently in development)
 
 ### Example
 

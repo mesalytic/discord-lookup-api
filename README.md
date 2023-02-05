@@ -29,9 +29,7 @@ Right now, you must specify an ID to the link (a proper website is currently in 
 
 ### Example
 
-`https://discordlookup.mesavirep.xyz/v1/604779545018761237`
-
-returns
+`https://discordlookup.mesavirep.xyz/v1/user/604779545018761237`
 
 ```json
 {
@@ -53,6 +51,61 @@ returns
         "is_animated": true,
         "color": "#385d6d"
     }
+}
+```
+
+`https://discordlookup.mesavirep.xyz/v1/application/276060004262477825`
+
+```json
+{
+   "id":"276060004262477825",
+   "name":"Koya",
+   "icon":"https://cdn.discordapp.com/avatars/276060004262477825/e02f48574f016a82632b7a39f843eb1a",
+   "description":"A multipurpose Discord bot including greetings cards, a One Piece RPG, moderation, reddits, rss and more!\n\n> **https://koya.gg**\n> **https://discord.gg/koya**",
+   "summary":"",
+   "type":1,
+   "hook":true,
+   "guild_id":"265574509749207043",
+   "bot_public":true,
+   "bot_require_code_grant":false,
+   "terms_of_service_url":"https://koya.gg/tos",
+   "privacy_policy_url":"https://koya.gg/privacy",
+   "install_params":{
+      "scopes":[
+         "bot",
+         "applications.commands"
+      ],
+      "permissions":"1644971945207"
+   },
+   "verify_key":"ac921655280d52d7da2a6e4d659219bb6129a11ec97962af9c9480dd242e0e2a",
+   "publishers":[
+      {
+         "id":"692518071386112150",
+         "name":"Koyamie"
+      }
+   ],
+   "developers":[
+      {
+         "id":"692518071386112150",
+         "name":"Koyamie"
+      }
+   ],
+   "flags":{
+      "bits":8699904,
+      "detailed":[
+         "GATEWAY_GUILD_MEMBERS",
+         "GATEWAY_GUILD_MEMBERS_LIMITED",
+         "GATEWAY_MESSAGE_CONTENT",
+         "APPLICATION_COMMAND_BADGE"
+      ]
+   },
+   "tags":[
+      "Entertainment",
+      "Games",
+      "Moderation and Tools",
+      "Productivity",
+      "Social"
+   ]
 }
 ```
 

@@ -6,7 +6,7 @@ const redis = require('redis');
 
 const config = require("./config.json");
 const snowflakeToDate = require("./utils");
-
+const { USER_FLAGS, APPLICATION_FLAGS } = require("./Constants");
 
 const client = redis.createClient({
     socket: {
@@ -36,97 +36,62 @@ app.get("/", (req, res) => {
     res.send("root page");
 });
 
-app.get("/v1/:id/", cors({
+app.get("/v1/application/:id", cors({
+    methods: ["GET"]
+}), async (req, res) => {
+    let cached = await client.get(`application_${id}`)
+
+    if (cached) res.send(JSON.parse(cached));
+    else {
+        fetch(`https://canary.discord.com/api/v10/applications/${req.params.id}/public`, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `${config.workerToken}`,
+            },
+        })
+            .then((res) => res.json())
+            .then((json) => {
+                let hashIcon = json.icon;
+                json.icon = `https://cdn.discordapp.com/avatars/${json.id}/${hashIcon}`
+
+                let publicFlags = [];
+                let flags = json.flags;
+                APPLICATION_FLAGS.forEach((flag) => {
+                    if (json.flags & flag.bitwise) publicFlags.push(flag.flag);
+                });
+                json.flags = {
+                    bits: flags,
+                    detailed: publicFlags
+                }
+
+                res.send(json);
+                client.setEx(`application_${id}`, 10800, JSON.stringify(json))
+            })
+    }
+
+})
+
+app.get("/v1/user/:id/", cors({
     methods: ["GET"]
 }), async (req, res) => {
     let id = req.params.id;
 
     try {
-        let cached = await client.get(id)
+        let cached = await client.get(`user_${id}`)
 
         if (cached) res.send(JSON.parse(cached));
         else {
             fetch(`https://canary.discord.com/api/v10/users/${id}`, {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bot ${config.token}`,
-                    },
-                })
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bot ${config.token}`,
+                },
+            })
                 .then((res) => res.json())
                 .then((json) => {
                     let publicFlags = [];
 
-                    let FLAGS = [{
-                            flag: "DISCORD_EMPLOYEE",
-                            bitwise: 1 << 0
-                        },
-                        {
-                            flag: "PARTNERED_SERVER_OWNER",
-                            bitwise: 1 << 1
-                        },
-                        {
-                            flag: "HYPESQUAD_EVENTS",
-                            bitwise: 1 << 2
-                        },
-                        {
-                            flag: "BUGHUNTER_LEVEL_1",
-                            bitwise: 1 << 3
-                        },
-                        {
-                            flag: "HOUSE_BRAVERY",
-                            bitwise: 1 << 6
-                        },
-                        {
-                            flag: "HOUSE_BRILLIANCE",
-                            bitwise: 1 << 7
-                        },
-                        {
-                            flag: "HOUSE_BALANCE",
-                            bitwise: 1 << 8
-                        },
-                        {
-                            flag: "EARLY_SUPPORTER",
-                            bitwise: 1 << 9
-                        },
-                        {
-                            flag: "TEAM_USER",
-                            bitwise: 1 << 10
-                        },
-                        {
-                            flag: "BUGHUNTER_LEVEL_2",
-                            bitwise: 1 << 14
-                        },
-                        {
-                            flag: "VERIFIED_BOT",
-                            bitwise: 1 << 16
-                        },
-                        {
-                            flag: "EARLY_VERIFIED_BOT_DEVELOPER",
-                            bitwise: 1 << 17
-                        },
-                        {
-                            flag: "DISCORD_CERTIFIED_MODERATOR",
-                            bitwise: 1 << 18
-                        },
-                        {
-                            flag: "BOT_HTTP_INTERACTIONS",
-                            bitwise: 1 << 19
-                        },
-                        {
-                            flag: "SPAMMER",
-                            bitwise: 1 << 20
-                        },
-                        {
-                            flag: "ACTIVE_DEVELOPER",
-                            bitwise: 1 << 22
-                        },
-                        {
-                            flag: "QUARANTINED",
-                            bitwise: 17592186044416
-                        }
-                    ];
-
-                    FLAGS.forEach((flag) => {
+                    USER_FLAGS.forEach((flag) => {
                         if (json.public_flags & flag.bitwise) publicFlags.push(flag.flag);
                     });
 
@@ -157,7 +122,7 @@ app.get("/v1/:id/", cors({
                     }
 
                     res.send(output);
-                    client.setEx(id, 10800, JSON.stringify(output)) // cached for 3 hours
+                    client.setEx(`user_${id}`, 10800, JSON.stringify(output)) // cached for 3 hours
                 });
         }
     } catch (err) {
@@ -165,7 +130,7 @@ app.get("/v1/:id/", cors({
     }
 });
 
-app.get("*", function(req, res) {
+app.get("*", function (req, res) {
     res.status(404).send("404 - Not Found");
 });
 

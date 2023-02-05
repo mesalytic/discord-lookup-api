@@ -39,6 +39,8 @@ app.get("/", (req, res) => {
 app.get("/v1/application/:id", cors({
     methods: ["GET"]
 }), async (req, res) => {
+    let id = req.params.id;
+    
     let cached = await client.get(`application_${id}`)
 
     if (cached) res.send(JSON.parse(cached));

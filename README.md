@@ -55,6 +55,8 @@ Right now, you must specify an ID to the link (a proper website is currently in 
 ```
 
 `https://discordlookup.mesavirep.xyz/v1/application/276060004262477825`
+> **Warning**
+> This endpoint is currently disabled.
 
 ```json
 {

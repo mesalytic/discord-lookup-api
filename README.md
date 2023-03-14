@@ -16,7 +16,6 @@ Data is cached for 3 hours (or until the Redis Server restarts)
 
 ## Planned features
 
-- Guild Lookup
 - Experiment Lookup
 - Invite Resolver
 
@@ -79,6 +78,20 @@ Right now, you must specify an ID to the link (a proper website is currently in 
       "detailed":["GATEWAY_GUILD_MEMBERS","GATEWAY_MESSAGE_CONTENT","APPLICATION_COMMAND_BADGE"]
    },
    "tags":["image","logging","meme","mini-game","music"]
+}
+```
+
+`https://discordlookup.mesavirep.xyz/v1/guild/81384788765712384`
+> **Note**
+> The guild linked to the request ID must have Server Widget and/or Server Discovery enabled.
+> An error will be thrown otherwise.
+
+```json
+{
+   "id":"81384788765712384",
+   "name":"Discord API",
+   "instant_invite":null,
+   "presence_count":18759
 }
 ```
 

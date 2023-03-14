@@ -36,6 +36,42 @@ app.get("/", (req, res) => {
     res.send("root page");
 });
 
+app.get("/v1/guild/:id", cors({
+    methods: ["GET"]
+}), async (req, res) => {
+    let id = req.params.id;
+
+    let cached = await client.get(`guild_${id}`);
+
+    if (cached) res.send(JSON.parse(cached));
+    else {
+        fetch(`https://canary.discord.com/api/v10/guilds/${id}/widget.json`, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((res) => res.json())
+            .then((json) => {
+                if (json.code && json.code === 50004) {
+                    res.send({
+                        "error": "The guild is either non-existant, unavailable, or has Server Widget/Discovery disabled."
+                    })
+                    return;
+                }
+
+                let output = {
+                    id: json.id,
+                    name: json.name,
+                    instant_invite: json.instant_invite,
+                    presence_count: json.presence_count
+                }
+
+                res.send(output);
+                client.setEx(`guild_${id}`, 10800, JSON.stringify(output))
+        })
+    }
+})
+
 app.get("/v1/application/:id", cors({
     methods: ["GET"]
 }), async (req, res) => {

@@ -39,21 +39,15 @@ app.get("/", (req, res) => {
 app.get("/v1/application/:id", cors({
     methods: ["GET"]
 }), async (req, res) => {
-    res.send({
-        error: 403,
-        message: "This endpoint is currently disabled."
-    })
-    /*
     let id = req.params.id;
     
     let cached = await client.get(`application_${id}`)
 
     if (cached) res.send(JSON.parse(cached));
     else {
-        fetch(`https://canary.discord.com/api/v10/applications/${req.params.id}/public`, {
+        fetch(`https://canary.discord.com/api/v10/applications/${req.params.id}/rpc`, {
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `${config.workerToken}`,
             },
         })
             .then((res) => res.json())
@@ -75,7 +69,6 @@ app.get("/v1/application/:id", cors({
                 client.setEx(`application_${id}`, 10800, JSON.stringify(json))
             })
     }
-*/
 })
 
 app.get("/v1/user/:id/", cors({

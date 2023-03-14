@@ -1,6 +1,5 @@
 {
     "token": "",
-    "workerToken": "a worker burner account token",
     "port": 3000,
     "redis": {
         "port": 6379,

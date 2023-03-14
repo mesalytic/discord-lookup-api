@@ -17,7 +17,6 @@ Data is cached for 3 hours (or until the Redis Server restarts)
 ## Planned features
 
 - Guild Lookup
-- Application Lookup
 - Experiment Lookup
 - Invite Resolver
 
@@ -54,60 +53,32 @@ Right now, you must specify an ID to the link (a proper website is currently in 
 }
 ```
 
-`https://discordlookup.mesavirep.xyz/v1/application/276060004262477825`
-> **Warning**
-> This endpoint is currently disabled.
+`https://discordlookup.mesavirep.xyz/v1/application/437190817195753472`
 
 ```json
 {
-   "id":"276060004262477825",
-   "name":"Koya",
-   "icon":"https://cdn.discordapp.com/avatars/276060004262477825/e02f48574f016a82632b7a39f843eb1a",
-   "description":"A multipurpose Discord bot including greetings cards, a One Piece RPG, moderation, reddits, rss and more!\n\n> **https://koya.gg**\n> **https://discord.gg/koya**",
+   "id":"437190817195753472",
+   "name":"Helixus",
+   "icon":"https://cdn.discordapp.com/avatars/437190817195753472/9d7e869d626efd6d0e61ac9e552e6fb6",
+   "description":"Helixus aims to do what would normally need multiple bots, and does it all by itself !\nYou can play Music (from some sources), log what happens in your server, send some memes, and much more!\n\nInvite it now to see the full capacity of Helixus!\n**SUPPORT**: https://discord.gg/pBATVfHg",
    "summary":"",
-   "type":1,
+   "type":null,
    "hook":true,
-   "guild_id":"265574509749207043",
+   "guild_id":"418433461817180180",
    "bot_public":true,
    "bot_require_code_grant":false,
-   "terms_of_service_url":"https://koya.gg/tos",
-   "privacy_policy_url":"https://koya.gg/privacy",
+   "terms_of_service_url":"https://gist.github.com/mesalytic/c132c786b47c86599021237f0303b952",
+   "privacy_policy_url":"https://gist.github.com/mesalytic/598c963ddfa4562ec7c867574ed7cedf",
    "install_params":{
-      "scopes":[
-         "bot",
-         "applications.commands"
-      ],
-      "permissions":"1644971945207"
+      "scopes":["bot","applications.commands"],
+      "permissions":"1926057290966"
    },
-   "verify_key":"ac921655280d52d7da2a6e4d659219bb6129a11ec97962af9c9480dd242e0e2a",
-   "publishers":[
-      {
-         "id":"692518071386112150",
-         "name":"Koyamie"
-      }
-   ],
-   "developers":[
-      {
-         "id":"692518071386112150",
-         "name":"Koyamie"
-      }
-   ],
+   "verify_key":"82449bea917a3e2b4a407254cc548e5d35de9cb8a888d692d65f31471ddc5fa0",
    "flags":{
-      "bits":8699904,
-      "detailed":[
-         "GATEWAY_GUILD_MEMBERS",
-         "GATEWAY_GUILD_MEMBERS_LIMITED",
-         "GATEWAY_MESSAGE_CONTENT",
-         "APPLICATION_COMMAND_BADGE"
-      ]
+      "bits":10764288,
+      "detailed":["GATEWAY_GUILD_MEMBERS","GATEWAY_MESSAGE_CONTENT","APPLICATION_COMMAND_BADGE"]
    },
-   "tags":[
-      "Entertainment",
-      "Games",
-      "Moderation and Tools",
-      "Productivity",
-      "Social"
-   ]
+   "tags":["image","logging","meme","mini-game","music"]
 }
 ```
 

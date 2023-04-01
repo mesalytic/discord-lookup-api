@@ -4,16 +4,17 @@ const fetch = require("node-fetch");
 const cors = require("cors");
 const redis = require('redis');
 
-const config = require("./config.json");
 const snowflakeToDate = require("./utils");
 const { USER_FLAGS, APPLICATION_FLAGS } = require("./Constants");
 
+require('dotenv').config();
+
 const client = redis.createClient({
     socket: {
-        host: config.redis.host,
-        port: config.redis.port
+        host: process.env.REDIS_HOST,
+        port: process.env.REDIS_PORT
     },
-    password: config.redis.password
+    password: process.env.REDIS_PASSWORD ?? ""
 })
 
 client.connect();
@@ -120,7 +121,7 @@ app.get("/v1/user/:id/", cors({
             fetch(`https://canary.discord.com/api/v10/users/${id}`, {
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bot ${config.token}`,
+                    Authorization: `Bot ${process.env.TOKEN}`,
                 },
             })
                 .then((res) => res.json())
@@ -170,5 +171,5 @@ app.get("*", function (req, res) {
     res.status(404).send("404 - Not Found");
 });
 
-app.listen(process.env.port || config.port, "127.0.0.1");
-console.log(`Server opened at port ${process.env.port || config.port}`);
+app.listen(process.env.API_PORT, "127.0.0.1");
+console.log(`Server opened at port ${process.env.API_PORT}`);

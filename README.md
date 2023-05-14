@@ -99,6 +99,8 @@ Right now, you must specify an ID to the link (a proper website is currently in 
 
 > **Note**
 > You must have a Redis server installed, and ready to be used.
+> **Warning**
+> The experiment worker API is not open-source, you'll need to implement one on your own.
 
 1) Clone the repo using Git
 2) Install dependencies (`npm i`)

@@ -37,6 +37,17 @@ app.get("/", (req, res) => {
     res.send("root page");
 });
 
+app.get("/v1/experiments", cors({
+    methods: ["GET"]
+}), async (req, res) => {
+    // TODO: Add a parameter for showing Guild Experiments or not
+    fetch(process.env.WORKER_API)
+        .then((res) => res.json())
+        .then((json) => {
+            console.log(json);
+    })
+})
+
 app.get("/v1/guild/:id", cors({
     methods: ["GET"]
 }), async (req, res) => {

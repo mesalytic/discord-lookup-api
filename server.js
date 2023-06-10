@@ -144,6 +144,7 @@ app.get("/v1/user/:id/", cors({
                         id: json.id,
                         created_at: snowflakeToDate(json.id),
                         tag: `${json.username}#${json.discriminator}`,
+                        global_name: json.global_name,
                         badges: publicFlags,
                         avatar: {
                             id: json.avatar,

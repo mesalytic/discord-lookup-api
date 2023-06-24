@@ -134,7 +134,7 @@ app.get("/v1/user/:id/", cors({
 
                     let avatarLink = null;
                     if (json.avatar)
-                        avatarLink = `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}`;
+                        avatarLink = `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`;
 
                     let bannerLink = null;
                     if (json.banner)

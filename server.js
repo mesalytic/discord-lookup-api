@@ -126,7 +126,16 @@ app.get("/v1/user/:id/", cors({
             })
                 .then((res) => res.json())
                 .then((json) => {
+                    if (json.message) return res.send(json);
+                    
                     let publicFlags = [];
+
+                    let premiumTypes = {
+                        0: "None",
+                        1: "Nitro Classic",
+                        2: "Nitro",
+                        3: "Nitro Basic"
+                    }
 
                     USER_FLAGS.forEach((flag) => {
                         if (json.public_flags & flag.bitwise) publicFlags.push(flag.flag);
@@ -138,25 +147,29 @@ app.get("/v1/user/:id/", cors({
 
                     let bannerLink = null;
                     if (json.banner)
-                        bannerLink = `https://cdn.discordapp.com/banners/${json.id}/${json.banner}`;
+                        bannerLink = `https://cdn.discordapp.com/banners/${json.id}/${json.banner}?size=480`;
 
                     let output = {
                         id: json.id,
                         created_at: snowflakeToDate(json.id),
-                        username: parseInt(json.discriminator) > 0 ? `${json.username}#${json.discriminator}` : json.username,
-                        global_name: json.global_name,
-                        badges: publicFlags,
+                        username: json.username,
                         avatar: {
                             id: json.avatar,
                             link: avatarLink,
                             is_animated: json.avatar != null && json.avatar.startsWith("a_") ? true : false,
                         },
+                        avatar_decoration: json.avatar_decoration_data,
+                        badges: publicFlags,
+                        premium_type: premiumTypes[json.premium_type],
+                        accent_color: json.accent_color,
+                        global_name: json.global_name,
                         banner: {
                             id: json.banner,
                             link: bannerLink,
                             is_animated: json.banner != null && json.banner.startsWith("a_") ? true : false,
                             color: json.banner_color,
-                        }
+                        },
+                        raw: json
                     }
 
                     res.send(output);

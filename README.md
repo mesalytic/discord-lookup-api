@@ -21,7 +21,15 @@ Data is cached for 3 hours (or until the Redis Server restarts)
 
 ## Usage
 
-You can freely access the API [here](https://discordlookup.mesavirep.xyz)
+You can freely access the API [here](https://discordlookup.mesavirep.xyz) <img src="https://img.shields.io/badge/-OFFLINE-red?label=Status" alt="Status" height="15">
+
+Or you can deploy your own instance of the API through Vercel:
+
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FjSydorowicz21%2Fdiscord-lookup-api&env=TOKEN&envDescription=Discord%20bot%20token&envLink=https%3A%2F%2Fdiscord.com%2Fdevelopers%2Fdocs%2Fquick-start%2Fgetting-started&project-name=discord-lookup-api&repository-name=discord-lookup-api)
+> **Note**
+> This version does not have caching due to Vercel limitations. You must also have a Discord Bot Token to use the API. You can get one [here](https://discord.com/developers/docs/quick-start/getting-started)
+>
 
 Right now, you must specify an ID to the link (a proper website is currently in development)
 

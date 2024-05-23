@@ -1,5 +1,9 @@
 # discord-lookup-api
 
+> **Warning**
+>
+> The API is currently offline because of domain name renewal, please see [#20](https://github.com/mesalytic/discord-lookup-api/issues/20)
+
 Discord Lookup API is an API that lets you, with a given ID, get basic informations about a user
 
 The API returns :

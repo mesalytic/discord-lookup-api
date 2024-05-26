@@ -1,9 +1,5 @@
 # discord-lookup-api
 
-> **Warning**
->
-> The API is currently offline because of domain name renewal, please see [#20](https://github.com/mesalytic/discord-lookup-api/issues/20)
-
 Discord Lookup API is an API that lets you, with a given ID, get basic informations about a user
 
 The API returns :
@@ -25,7 +21,7 @@ Data is cached for 3 hours (or until the Redis Server restarts)
 
 ## Usage
 
-You can freely access the API [here](https://discordlookup.mesavirep.xyz)
+You can freely access the API [here](https://discordlookup.mesalytic.moe)
 
 Or you can deploy your own instance of the API through Vercel:
 
@@ -38,7 +34,7 @@ Right now, you must specify an ID to the link (a proper website is currently in 
 
 ### Example
 
-`https://discordlookup.mesavirep.xyz/v1/user/604779545018761237`
+`https://discordlookup.mesalytic.moe/v1/user/604779545018761237`
 
 ```json
 {
@@ -63,7 +59,7 @@ Right now, you must specify an ID to the link (a proper website is currently in 
 }
 ```
 
-`https://discordlookup.mesavirep.xyz/v1/application/437190817195753472`
+`https://discordlookup.mesalytic.moe/v1/application/437190817195753472`
 
 ```json
 {
@@ -92,7 +88,7 @@ Right now, you must specify an ID to the link (a proper website is currently in 
 }
 ```
 
-`https://discordlookup.mesavirep.xyz/v1/guild/81384788765712384`
+`https://discordlookup.mesalytic.moe/v1/guild/81384788765712384`
 > **Note**
 > The guild linked to the request ID must have Server Widget and/or Server Discovery enabled.
 > An error will be thrown otherwise.

@@ -10,15 +10,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/cors": "^2.8.17",
-    "@types/express": "^5.0.0",
-    "@types/minimist": "^1.2.5",
-    "@types/node-fetch": "^2.6.11",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "minimist": "^1.2.8",
     "node-fetch": "^2.6.7",
     "redis": "^4.5.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/minimist": "^1.2.5",
+    "@types/node-fetch": "^2.6.11"
   }
 }

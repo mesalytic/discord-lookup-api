@@ -8,18 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@types/cors':
-        specifier: ^2.8.17
-        version: 2.8.17
-      '@types/express':
-        specifier: ^5.0.0
-        version: 5.0.0
-      '@types/minimist':
-        specifier: ^1.2.5
-        version: 1.2.5
-      '@types/node-fetch':
-        specifier: ^2.6.11
-        version: 2.6.11
       cors:
         specifier: ^2.8.5
         version: 2.8.5
@@ -38,6 +26,19 @@ importers:
       redis:
         specifier: ^4.5.1
         version: 4.7.0
+    devDependencies:
+      '@types/cors':
+        specifier: ^2.8.17
+        version: 2.8.17
+      '@types/express':
+        specifier: ^5.0.0
+        version: 5.0.0
+      '@types/minimist':
+        specifier: ^1.2.5
+        version: 1.2.5
+      '@types/node-fetch':
+        specifier: ^2.6.11
+        version: 2.6.11
 
 packages:
 

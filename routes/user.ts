@@ -77,9 +77,9 @@ router.get("/:id", cors({ methods: ["GET"] }), async (req: Request, res: Respons
             raw: json
         };
 
-        res.send(json);
+        res.send(output); // todofix: send formatted output instead of raw json 
         if (!disableCache && redisClient) {
-            await redisClient.setEx(`user_${id}`, 10800, JSON.stringify(json));
+            await redisClient.setEx(`user_${id}`, 10800, JSON.stringify(output));
         }
     } catch (error) {
         res.status(500).send({ error: "An error occurred while fetching the user data." });

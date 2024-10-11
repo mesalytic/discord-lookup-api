@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import minimist from "minimist";
 import redisWrapper from "./redisClient";
 
 import guildRoutes from "./routes/guild";
@@ -8,6 +9,9 @@ import applicationRoutes from "./routes/application";
 import userRoutes from "./routes/user";
 
 dotenv.config();
+
+const args = minimist(process.argv.slice(2));
+const disableCache = args["disable-cache"];
 
 const app = express();
 app.use(cors());
@@ -19,20 +23,15 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     next();
 });
 
-app.use("/v1/guild", (req, res, next) => {
+app.use((req, res, next) => {
+    req.disableCache = disableCache;
     req.redisClient = redisWrapper;
     next();
-}, guildRoutes);
+});
 
-app.use("/v1/application", (req, res, next) => {
-    req.redisClient = redisWrapper;
-    next();
-}, applicationRoutes);
-
-app.use("/v1/user", (req, res, next) => {
-    req.redisClient = redisWrapper;
-    next();
-}, userRoutes);
+app.use("/v1/guild", guildRoutes);
+app.use("/v1/application", applicationRoutes);
+app.use("/v1/user", userRoutes);
 
 app.get("/", (req: Request, res: Response) => {
     res.send("root page");

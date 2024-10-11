@@ -8,34 +8,39 @@ const router = express.Router();
 router.get("/:id", cors({ methods: ["GET"] }), async (req: Request, res: Response) => {
     const id = req.params.id;
     const redisClient = req.redisClient;
+    const disableCache = req.disableCache;
 
-    try {
+    if (!disableCache) {
         const cached = await redisClient.get(`application_${id}`);
-
         if (cached) {
             res.send(JSON.parse(cached));
-        } else {
-            const response = await fetch(`https://canary.discord.com/api/v10/applications/${id}/rpc`, {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
-            const json = await response.json();
+            return;
+        }
+    }
 
-            const hashIcon = json.icon;
-            json.icon = `https://cdn.discordapp.com/avatars/${json.id}/${hashIcon}`;
+    try {
+        const response = await fetch(`https://canary.discord.com/api/v10/applications/${id}/rpc`, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        const json = await response.json();
 
-            const publicFlags: string[] = [];
-            const flags = json.flags;
-            APPLICATION_FLAGS.forEach((flag) => {
-                if (json.flags & flag.bitwise) publicFlags.push(flag.flag);
-            });
-            json.flags = {
-                bits: flags,
-                detailed: publicFlags
-            };
+        const hashIcon = json.icon;
+        json.icon = `https://cdn.discordapp.com/avatars/${json.id}/${hashIcon}`;
 
-            res.send(json);
+        const publicFlags: string[] = [];
+        const flags = json.flags;
+        APPLICATION_FLAGS.forEach((flag) => {
+            if (json.flags & flag.bitwise) publicFlags.push(flag.flag);
+        });
+        json.flags = {
+            bits: flags,
+            detailed: publicFlags
+        };
+
+        res.send(json);
+        if (!disableCache) {
             await redisClient.setEx(`application_${id}`, 10800, JSON.stringify(json));
         }
     } catch (error) {

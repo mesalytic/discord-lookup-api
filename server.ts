@@ -13,7 +13,7 @@ dotenv.config();
 const args = minimist(process.argv.slice(2));
 const disableCache = args["disable-cache"];
 
-const redisClient = new RedisWrapper();
+const redisClient = disableCache ? null : new RedisWrapper();
 
 const app = express();
 app.use(cors());

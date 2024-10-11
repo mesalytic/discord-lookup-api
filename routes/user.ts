@@ -11,7 +11,7 @@ router.get("/:id", cors({ methods: ["GET"] }), async (req: Request, res: Respons
     const redisClient = req.redisClient;
     const disableCache = req.disableCache;
 
-    if (!disableCache) {
+    if (!disableCache && redisClient) {
         const cached = await redisClient.get(`user_${id}`);
         if (cached) {
             res.send(JSON.parse(cached));
@@ -78,7 +78,7 @@ router.get("/:id", cors({ methods: ["GET"] }), async (req: Request, res: Respons
         };
 
         res.send(json);
-        if (!disableCache) {
+        if (!disableCache && redisClient) {
             await redisClient.setEx(`user_${id}`, 10800, JSON.stringify(json));
         }
     } catch (error) {

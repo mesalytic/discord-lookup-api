@@ -56,5 +56,4 @@ class RedisWrapper {
     }
 }
 
-const redisWrapper = new RedisWrapper();
-export default redisWrapper;
+export default RedisWrapper;

@@ -2,7 +2,7 @@ import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import minimist from "minimist";
-import redisWrapper from "./redisClient";
+import RedisWrapper from "./redisClient";
 
 import guildRoutes from "./routes/guild";
 import applicationRoutes from "./routes/application";
@@ -12,6 +12,8 @@ dotenv.config();
 
 const args = minimist(process.argv.slice(2));
 const disableCache = args["disable-cache"];
+
+const redisClient = new RedisWrapper();
 
 const app = express();
 app.use(cors());
@@ -25,7 +27,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 app.use((req, res, next) => {
     req.disableCache = disableCache;
-    req.redisClient = redisWrapper;
+    req.redisClient = redisClient;
     next();
 });
 

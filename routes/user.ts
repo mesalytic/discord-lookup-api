@@ -77,7 +77,7 @@ router.get("/:id", cors({ methods: ["GET"] }), async (req: Request, res: Respons
             raw: json
         };
 
-        res.send(output); // todofix: send formatted output instead of raw json 
+        res.send(output);
         if (!disableCache && redisClient) {
             await redisClient.setEx(`user_${id}`, 10800, JSON.stringify(output));
         }

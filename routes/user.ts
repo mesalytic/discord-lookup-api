@@ -1,7 +1,6 @@
 import express, { Request, Response } from "express";
 import fetch from "node-fetch";
 import cors from "cors";
-import client from "../redisClient";
 import { USER_FLAGS } from "../constants";
 import snowflakeToDate from "../utils";
 
@@ -9,9 +8,10 @@ const router = express.Router();
 
 router.get("/:id", cors({ methods: ["GET"] }), async (req: Request, res: Response) => {
     const id = req.params.id;
+    const redisClient = req.redisClient;
 
     try {
-        const cached = await client.get(`user_${id}`);
+        const cached = await redisClient.get(`user_${id}`);
 
         if (cached) {
             res.send(JSON.parse(cached));
@@ -74,7 +74,7 @@ router.get("/:id", cors({ methods: ["GET"] }), async (req: Request, res: Respons
             };
 
             res.send(output);
-            await client.setEx(`user_${id}`, 10800, JSON.stringify(output)); // cached for 3 hours
+            await redisClient.setEx(`user_${id}`, 10800, JSON.stringify(output)); // cached for 3 hours
         }
     } catch (err) {
         console.log(err);

@@ -1,14 +1,14 @@
 import express, { Request, Response } from "express";
-import fetch from "node-fetch";
 import cors from "cors";
-import client from "../redisClient";
+import fetch from "node-fetch";
 
 const router = express.Router();
 
 router.get("/:id", cors({ methods: ["GET"] }), async (req: Request, res: Response) => {
     const id = req.params.id;
+    const redisClient = req.redisClient;
 
-    const cached = await client.get(`guild_${id}`);
+    const cached = await redisClient.get(`guild_${id}`);
 
     if (cached) {
         res.send(JSON.parse(cached));
@@ -36,7 +36,7 @@ router.get("/:id", cors({ methods: ["GET"] }), async (req: Request, res: Respons
             };
 
             res.send(output);
-            await client.setEx(`guild_${id}`, 10800, JSON.stringify(output));
+            await redisClient.setEx(`guild_${id}`, 10800, JSON.stringify(output));
         } catch (error) {
             res.status(500).send({ error: "An error occurred while fetching the guild data." });
         }

@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import redisWrapper from "./redisClient";
 
 import guildRoutes from "./routes/guild";
 import applicationRoutes from "./routes/application";
@@ -18,9 +19,20 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     next();
 });
 
-app.use("/v1/guild", guildRoutes);
-app.use("/v1/application", applicationRoutes);
-app.use("/v1/user", userRoutes);
+app.use("/v1/guild", (req, res, next) => {
+    req.redisClient = redisWrapper;
+    next();
+}, guildRoutes);
+
+app.use("/v1/application", (req, res, next) => {
+    req.redisClient = redisWrapper;
+    next();
+}, applicationRoutes);
+
+app.use("/v1/user", (req, res, next) => {
+    req.redisClient = redisWrapper;
+    next();
+}, userRoutes);
 
 app.get("/", (req: Request, res: Response) => {
     res.send("root page");

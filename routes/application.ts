@@ -1,16 +1,16 @@
 import express, { Request, Response } from "express";
 import fetch from "node-fetch";
 import cors from "cors";
-import client from "../redisClient";
 import { APPLICATION_FLAGS } from "../constants";
 
 const router = express.Router();
 
 router.get("/:id", cors({ methods: ["GET"] }), async (req: Request, res: Response) => {
     const id = req.params.id;
+    const redisClient = req.redisClient;
 
     try {
-        const cached = await client.get(`application_${id}`);
+        const cached = await redisClient.get(`application_${id}`);
 
         if (cached) {
             res.send(JSON.parse(cached));
@@ -36,7 +36,7 @@ router.get("/:id", cors({ methods: ["GET"] }), async (req: Request, res: Respons
             };
 
             res.send(json);
-            await client.setEx(`application_${id}`, 10800, JSON.stringify(json));
+            await redisClient.setEx(`application_${id}`, 10800, JSON.stringify(json));
         }
     } catch (error) {
         res.status(500).send({ error: "An error occurred while fetching the application data." });

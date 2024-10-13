@@ -3,6 +3,6 @@
 
 node_modules
 .env
-pnpm-lock.yaml
 
 test.js
+dist/

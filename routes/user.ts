@@ -74,6 +74,7 @@ router.get("/:id", cors({ methods: ["GET"] }), async (req: Request, res: Respons
                 is_animated: json.banner != null && json.banner.startsWith("a_") ? true : false,
                 color: json.banner_color,
             },
+            clan: json.clan,
             raw: json
         };
 

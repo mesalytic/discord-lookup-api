@@ -1,5 +1,9 @@
 # discord-lookup-api
 
+> [!CAUTION]
+> The API is currently offline, please check [issue #20](https://github.com/mesalytic/discord-lookup-api/issues/20) for more informations!<br>
+> In the meanwhile, you can deploy your own API instance using Vercel (see below), do note it will not have caching as per Vercel limitations.
+
 Discord Lookup API is an API that lets you, with a given ID, get basic informations about a user
 
 The API returns :

@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 const cors = require("cors");
 const redis = require('redis');
 
-const snowflakeToDate = require("./utils");
+const { snowflakeToDate, checkValidSnowflake } = require("./utils");
 const { USER_FLAGS, APPLICATION_FLAGS } = require("./Constants");
 
 require('dotenv').config();
@@ -40,13 +40,14 @@ app.get("/", (req, res) => {
 app.get("/v1/guild/:id", cors({
     methods: ["GET"]
 }), async (req, res) => {
-    let id = req.params.id;
+    let id = await checkValidSnowflake(req.params.id);
+    if (isNaN(id)) return res.send({ message: "Value is not a valid Discord snowflake" })
 
-    let cached = await client.get(`guild_${id}`);
+    let cached = await client.get(`guild_${parseInt(id)}`);
 
     if (cached) res.send(JSON.parse(cached));
     else {
-        fetch(`https://canary.discord.com/api/v10/guilds/${id}/widget.json`, {
+        fetch(`https://canary.discord.com/api/v10/guilds/${parseInt(id)}/widget.json`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -68,7 +69,7 @@ app.get("/v1/guild/:id", cors({
                 }
 
                 res.send(output);
-                client.setEx(`guild_${id}`, 10800, JSON.stringify(output))
+                client.setEx(`guild_${parseInt(id)}`, 10800, JSON.stringify(output))
         })
     }
 })
@@ -76,13 +77,14 @@ app.get("/v1/guild/:id", cors({
 app.get("/v1/application/:id", cors({
     methods: ["GET"]
 }), async (req, res) => {
-    let id = req.params.id;
+    let id = await checkValidSnowflake(req.params.id);
+    if (isNaN(id)) return res.send({ message: "Value is not a valid Discord snowflake" })
     
-    let cached = await client.get(`application_${id}`)
+    let cached = await client.get(`application_${parseInt(id)}`)
 
     if (cached) res.send(JSON.parse(cached));
     else {
-        fetch(`https://canary.discord.com/api/v10/applications/${req.params.id}/rpc`, {
+        fetch(`https://canary.discord.com/api/v10/applications/${parseInt(id)}/rpc`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -103,7 +105,7 @@ app.get("/v1/application/:id", cors({
                 }
 
                 res.send(json);
-                client.setEx(`application_${id}`, 10800, JSON.stringify(json))
+                client.setEx(`application_${parseInt(id)}`, 10800, JSON.stringify(json))
             })
     }
 })
@@ -111,14 +113,15 @@ app.get("/v1/application/:id", cors({
 app.get("/v1/user/:id/", cors({
     methods: ["GET"]
 }), async (req, res) => {
-    let id = req.params.id;
-
+    let id = await checkValidSnowflake(req.params.id);
+    if (isNaN(id)) return res.send({ message: "Value is not a valid Discord snowflake" });
+    
     try {
-        let cached = await client.get(`user_${id}`)
+        let cached = await client.get(`user_${parseInt(id)}`)
 
         if (cached) res.send(JSON.parse(cached));
         else {
-            fetch(`https://canary.discord.com/api/v10/users/${id}`, {
+            fetch(`https://canary.discord.com/api/v10/users/${parseInt(id)}`, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bot ${process.env.TOKEN}`,
@@ -173,7 +176,7 @@ app.get("/v1/user/:id/", cors({
                     }
 
                     res.send(output);
-                    client.setEx(`user_${id}`, 10800, JSON.stringify(output)) // cached for 3 hours
+                    client.setEx(`user_${parseInt(id)}`, 10800, JSON.stringify(output)) // cached for 3 hours
                 });
         }
     } catch (err) {

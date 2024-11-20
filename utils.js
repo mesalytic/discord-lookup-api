@@ -1,3 +1,5 @@
+const { VALID_SNOWFLAKE_REGEX } = require("./Constants");
+
 function snowflakeToDate(id) {
     let temp = parseInt(id).toString(2);
     let length = 64 - temp.length;
@@ -12,4 +14,12 @@ function snowflakeToDate(id) {
     return date;
 }
 
-module.exports = snowflakeToDate;
+async function checkValidSnowflake(id) {
+    if (VALID_SNOWFLAKE_REGEX.test(id)) return id;
+    else return 'Invalid Discord ID';
+}
+
+module.exports = {
+    snowflakeToDate,
+    checkValidSnowflake
+};

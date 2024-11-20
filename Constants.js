@@ -106,7 +106,10 @@ let APPLICATION_FLAGS = [{
 },
 ];
 
+const VALID_SNOWFLAKE_REGEX = /^\d{17,20}$/
+
 module.exports = {
     USER_FLAGS,
-    APPLICATION_FLAGS
+    APPLICATION_FLAGS,
+    VALID_SNOWFLAKE_REGEX
 }

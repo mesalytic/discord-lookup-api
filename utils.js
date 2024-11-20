@@ -14,7 +14,7 @@ function snowflakeToDate(id) {
     return date;
 }
 
-async function checkValidSnowflake(id) {
+function checkValidSnowflake(id) {
     if (VALID_SNOWFLAKE_REGEX.test(id)) return id;
     else return 'Invalid Discord ID';
 }

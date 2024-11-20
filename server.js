@@ -40,7 +40,7 @@ app.get("/", (req, res) => {
 app.get("/v1/guild/:id", cors({
     methods: ["GET"]
 }), async (req, res) => {
-    let id = await checkValidSnowflake(req.params.id);
+    let id = checkValidSnowflake(req.params.id);
     if (isNaN(id)) return res.send({ message: "Value is not a valid Discord snowflake" })
 
     let cached = await client.get(`guild_${id}`);
@@ -77,7 +77,7 @@ app.get("/v1/guild/:id", cors({
 app.get("/v1/application/:id", cors({
     methods: ["GET"]
 }), async (req, res) => {
-    let id = await checkValidSnowflake(req.params.id);
+    let id = checkValidSnowflake(req.params.id);
     if (isNaN(id)) return res.send({ message: "Value is not a valid Discord snowflake" })
     
     let cached = await client.get(`application_${id}`)
@@ -113,7 +113,7 @@ app.get("/v1/application/:id", cors({
 app.get("/v1/user/:id/", cors({
     methods: ["GET"]
 }), async (req, res) => {
-    let id = await checkValidSnowflake(req.params.id);
+    let id = checkValidSnowflake(req.params.id);
     if (isNaN(id)) return res.send({ message: "Value is not a valid Discord snowflake" });
     
     try {

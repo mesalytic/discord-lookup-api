@@ -1,8 +1,9 @@
 import express, { Request, Response } from "express";
 import fetch from "node-fetch";
 import cors from "cors";
+
 import { USER_FLAGS } from "../constants";
-import snowflakeToDate from "../utils";
+import utils from "../utils";
 
 const router = express.Router();
 
@@ -10,10 +11,15 @@ router.get(
   "/:id",
   cors({ methods: ["GET"] }),
   async (req: Request, res: Response) => {
-    const id = req.params.id;
+    const id = utils.checkValidSnowflake(req.params.id);
     const redisClient = req.redisClient;
     const disableCache = req.disableCache;
-
+    
+    if (id === "Invalid Discord ID") {
+      res.send({ message: "Value is not a valid Discord snowflake" });
+      return;
+    }
+    
     if (!disableCache && redisClient) {
       const cached = await redisClient.get(`user_${id}`);
       if (cached) {
@@ -62,7 +68,7 @@ router.get(
 
       const output = {
         id: json.id,
-        created_at: snowflakeToDate(json.id),
+        created_at: utils.snowflakeToDate(json.id),
         username: json.username,
         avatar: {
           id: json.avatar,

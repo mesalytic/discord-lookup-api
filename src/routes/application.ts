@@ -1,7 +1,9 @@
 import express, { Request, Response } from "express";
 import fetch from "node-fetch";
 import cors from "cors";
+
 import { APPLICATION_FLAGS } from "../constants";
+import utils from "../utils";
 
 const router = express.Router();
 
@@ -9,9 +11,14 @@ router.get(
   "/:id",
   cors({ methods: ["GET"] }),
   async (req: Request, res: Response) => {
-    const id = req.params.id;
+    const id = utils.checkValidSnowflake(req.params.id);
     const redisClient = req.redisClient;
     const disableCache = req.disableCache;
+
+    if (id === "Invalid Discord ID") {
+      res.send({ message: "Value is not a valid Discord snowflake" });
+      return;
+    }
 
     if (!disableCache && redisClient) {
       const cached = await redisClient.get(`application_${id}`);

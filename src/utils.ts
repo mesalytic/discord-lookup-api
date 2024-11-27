@@ -1,3 +1,5 @@
+import { VALID_SNOWFLAKE_REGEX } from "./constants";
+
 function snowflakeToDate(id: string): Date {
     let temp = parseInt(id).toString(2);
     let length = 64 - temp.length;
@@ -14,4 +16,9 @@ function snowflakeToDate(id: string): Date {
     return date;
 }
 
-export default snowflakeToDate;
+function checkValidSnowflake(id: string): string {
+    if (VALID_SNOWFLAKE_REGEX.test(id)) return id;
+    else return "Invalid Discord ID";
+}
+
+export default { snowflakeToDate, checkValidSnowflake };

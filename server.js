@@ -65,7 +65,8 @@ app.get("/v1/guild/:id", cors({
                     id: json.id,
                     name: json.name,
                     instant_invite: json.instant_invite,
-                    presence_count: json.presence_count
+                    presence_count: json.presence_count,
+                    channels: json.channels
                 }
 
                 res.send(output);
@@ -133,7 +134,7 @@ app.get("/v1/user/:id/", cors({
                     
                     let publicFlags = [];
 
-                    let premiumTypes = {
+                     let premiumTypes = {
                         0: "None",
                         1: "Nitro Classic",
                         2: "Nitro",
@@ -181,6 +182,44 @@ app.get("/v1/user/:id/", cors({
         }
     } catch (err) {
         console.log(err);
+    }
+});
+
+app.get("/v1/invite/:code", async (req, res) => {
+    const code = req.params.code;
+
+    if (!code || typeof code !== "string") {
+        console.warn("Invalid invitation code provided :", code);
+        return res.status(400).send({ message: "Invalid invite code." });
+    }
+
+    try {
+       
+        const cached = await client.get(`invite_${code}`);
+        if (cached) {
+            console.log(`Cache hit pour invite_${code}`);
+            return res.json(JSON.parse(cached));
+        }
+
+        console.log(`Missed cache for invite_${code}. Discord API Request.`);
+        const response = await fetch(`https://discord.com/api/v10/invites/${code}?with_counts=true&with_expiration=true`, {
+            headers: { "Content-Type": "application/json" },
+        });
+
+        if (!response.ok) {
+            console.warn("Discord API error for invitation :", code);
+            await client.setEx(`invite_${code}`, 600, JSON.stringify({ error: "Failed to fetch invite details.", code: response.status }));
+            return res.status(200).send({ error: "Failed to fetch invite details.", code: response.status });
+        }
+
+        const json = await response.json();
+
+        await client.setEx(`invite_${code}`, 3600, JSON.stringify(json));
+        console.log(`Updated cache for invite_${code}`);
+        res.json(json);
+    } catch (error) {
+        console.error("Error retrieving invitation information :", error);
+        res.status(500).send({ error: "Internal server error" });
     }
 });
 

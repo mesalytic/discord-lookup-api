@@ -5,7 +5,7 @@ Discord Lookup API is an API that lets you, with a given ID, get basic informati
 The API returns :
 
 - User ID
-- User Tag (username#0000)
+- User Username
 - User Badges
 - Avatar (ID, Link, animated boolean)
 - Banner (ID, Link, animated boolean, color)
@@ -34,57 +34,116 @@ Right now, you must specify an ID to the link (a proper website is currently in 
 
 ### Example
 
-`https://discordlookup.mesalytic.moe/v1/user/604779545018761237`
+`https://discordlookup.mesalytic.moe/v1/user/547744111419981825`
 
 ```json
 {
-    "id": "604779545018761237",
-    "tag": "mesa#0101",
-    "badges": [
-        "HOUSE_BRAVERY",
-        "EARLY_VERIFIED_BOT_DEVELOPER",
-        "ACTIVE_DEVELOPER"
-    ],
-    "avatar": {
-        "id": "02a161dcd6d590fbce550d6872468cc7",
-        "link": "https://cdn.discordapp.com/avatars/604779545018761237/02a161dcd6d590fbce550d6872468cc7",
-        "is_animated": false
+  "id": "547744111419981825",
+  "created_at": "2019-02-20T11:39:32.756Z",
+  "username": "oxyde.code",
+  "avatar": {
+    "id": "03c99885d79674a95c176d4f1f613494",
+    "link": "https://cdn.discordapp.com/avatars/547744111419981825/03c99885d79674a95c176d4f1f613494",
+    "is_animated": false
+  },
+  "avatar_decoration": {
+    "asset": "a_f37b13213a05d82f2125bc262f61180a",
+    "sku_id": "1391785327613706301",
+    "expires_at": 1758582000
+  },
+  "badges": [
+    "HOUSE_BRILLIANCE",
+    "ACTIVE_DEVELOPER"
+  ],
+  "accent_color": 3487288,
+  "global_name": "Oxyde",
+  "banner": {
+    "id": null,
+    "link": null,
+    "is_animated": false,
+    "color": "#353638"
+  },
+  "raw": {
+    "id": "547744111419981825",
+    "username": "oxyde.code",
+    "avatar": "03c99885d79674a95c176d4f1f613494",
+    "discriminator": "0",
+    "public_flags": 4194432,
+    "flags": 4194432,
+    "banner": null,
+    "accent_color": 3487288,
+    "global_name": "Oxyde",
+    "avatar_decoration_data": {
+      "asset": "a_f37b13213a05d82f2125bc262f61180a",
+      "sku_id": "1391785327613706301",
+      "expires_at": 1758582000
     },
-    "banner": {
-        "id": "a_b987e17d75cc964905b04a575636c60e",
-        "link": "https://cdn.discordapp.com/banners/604779545018761237/a_b987e17d75cc964905b04a575636c60e",
-        "is_animated": true,
-        "color": "#385d6d"
+    "collectibles": null,
+    "display_name_styles": null,
+    "banner_color": "#353638",
+    "clan": {
+      "identity_guild_id": "611968575342903297",
+      "identity_enabled": true,
+      "tag": "GTAF",
+      "badge": "08778bfc800e50707543540f0c167607"
+    },
+    "primary_guild": {
+      "identity_guild_id": "611968575342903297",
+      "identity_enabled": true,
+      "tag": "GTAF",
+      "badge": "08778bfc800e50707543540f0c167607"
     }
-}
+  }
 ```
 
 `https://discordlookup.mesalytic.moe/v1/application/437190817195753472`
 
 ```json
 {
-   "id":"437190817195753472",
-   "name":"Helixus",
-   "icon":"https://cdn.discordapp.com/avatars/437190817195753472/9d7e869d626efd6d0e61ac9e552e6fb6",
-   "description":"Helixus aims to do what would normally need multiple bots, and does it all by itself !\nYou can play Music (from some sources), log what happens in your server, send some memes, and much more!\n\nInvite it now to see the full capacity of Helixus!\n**SUPPORT**: https://discord.gg/pBATVfHg",
-   "summary":"",
-   "type":null,
-   "hook":true,
-   "guild_id":"418433461817180180",
-   "bot_public":true,
-   "bot_require_code_grant":false,
-   "terms_of_service_url":"https://gist.github.com/mesalytic/c132c786b47c86599021237f0303b952",
-   "privacy_policy_url":"https://gist.github.com/mesalytic/598c963ddfa4562ec7c867574ed7cedf",
-   "install_params":{
-      "scopes":["bot","applications.commands"],
-      "permissions":"1926057290966"
-   },
-   "verify_key":"82449bea917a3e2b4a407254cc548e5d35de9cb8a888d692d65f31471ddc5fa0",
-   "flags":{
-      "bits":10764288,
-      "detailed":["GATEWAY_GUILD_MEMBERS","GATEWAY_MESSAGE_CONTENT","APPLICATION_COMMAND_BADGE"]
-   },
-   "tags":["image","logging","meme","mini-game","music"]
+  "id": "437190817195753472",
+  "name": "Helixus",
+  "icon": "https://cdn.discordapp.com/avatars/437190817195753472/9d7e869d626efd6d0e61ac9e552e6fb6",
+  "description": "Helixus is currently not up to date, as development was ceased in January 2024.\nThank you all.",
+  "summary": "",
+  "type": null,
+  "is_monetized": false,
+  "is_verified": true,
+  "is_discoverable": false,
+  "hook": true,
+  "guild_id": "418433461817180180",
+  "storefront_available": false,
+  "bot_public": true,
+  "bot_require_code_grant": false,
+  "terms_of_service_url": "https://gist.github.com/mesalytic/c132c786b47c86599021237f0303b952",
+  "privacy_policy_url": "https://gist.github.com/mesalytic/598c963ddfa4562ec7c867574ed7cedf",
+  "install_params": {
+    "scopes": [
+      "applications.commands",
+      "bot"
+    ],
+    "permissions": "1926057290966"
+  },
+  "integration_types_config": {
+    "0": {
+
+    }
+  },
+  "verify_key": "82449bea917a3e2b4a407254cc548e5d35de9cb8a888d692d65f31471ddc5fa0",
+  "flags": {
+    "bits": 10764288,
+    "detailed": [
+      "GATEWAY_GUILD_MEMBERS",
+      "GATEWAY_MESSAGE_CONTENT",
+      "APPLICATION_COMMAND_BADGE"
+    ]
+  },
+  "tags": [
+    "image",
+    "logging",
+    "meme",
+    "mini-game",
+    "music"
+  ]
 }
 ```
 
